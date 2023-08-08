@@ -1,25 +1,32 @@
-import logo from './logo.svg';
-import './App.css';
+import { Routes, Route } from 'react-router-dom';
+import { lazy} from 'react';
 
-function App() {
+const SharedLayout = lazy(() => import('./components/sharedLayout/SharedLayout'));
+const Home = lazy(() => import('./pages/Home'));
+const Movies = lazy(() => import('./pages/Movies'));
+const NotFound = lazy(() => import('./pages/NotFound'));
+const MovieDetails = lazy(() => import('./components/movieDetails/MovieDetails'));
+const Cast = lazy(() => import('./components/cast/Cast'));
+const Reviews = lazy(() => import('./components/reviews/Reviews'));
+
+const App = () => {
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <Routes>
+        <Route path="/" element={<SharedLayout />}>
+          <Route index element={<Home />} />
+          <Route path="movies/:movieId" element={<MovieDetails />} />
+          <Route path="movies" element={<Movies />} />
+          <Route path="movies/:movieId" element={<MovieDetails />}>
+            <Route path="cast" element={<Cast />} />
+            <Route path="reviews" element={<Reviews />} />
+          </Route>
+          <Route path="*" element={<NotFound />} />
+        </Route>
+      </Routes>
     </div>
   );
-}
+};
 
 export default App;
